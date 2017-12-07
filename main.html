@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Medilla</title>
+		<script type="text/javascript" src="./ipfs/ipfs.js"></script>
+	    <script type="text/javascript" src="./web3/web3.min.js"></script>
+	    <script type="text/javascript" src="./config.js"></script>
+	    <script type="text/javascript" src="./utils.js"></script>
+	</head>
+
+	<body>
+		<h1>Medilla</h1>
+		<div id='beforeDeployBody'>
+			<button onclick="deployStorage()">Initialize World</button>
+		</div>
+		
+		<div id='afterDeployBody' style='display:none'>
+			<h3>Posts</h3>
+			<p id='noPostWarning'>No posts have been added.</p>
+			<ul id='postList'>
+			</ul>
+			<button onclick="getContent()">Refresh Content</button>
+			<h3>Add a msg:</h3>
+			<textarea id="textField"></textarea>
+			<button onclick="storeTextInField()" id="textSubmit">Submit</button>
+		</div>
+
+	</body>
+</html>
