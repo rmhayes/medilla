@@ -3,34 +3,6 @@ function initializeLog() {
     storeAddress("QmbFMke1KXqnYyBBWxB74N4c5SBnJMVAiMNRcGu6x1AwQH");
 }
 
-function deployStorage() {
-    window.IPFSHash = null;
-    window.currentData = null;
-
-    if (window.contractInstance) {
-        console.error('Contract already been deployed at: ', window.contractAddress);
-        return;
-    }
-
-    window.contract.new(window.contractObject, function (err, contract) {
-        if (err) {
-            console.error("Contract deployment error: ", err);
-        } else if (contract.address) {
-            window.contractAddress = contract.address;
-            window.contractInstance = window.contract.at(contract.address);
-            console.log("Contract successfully deployed at: ", contract.address);
-            document.getElementById("beforeDeployBody").style.display = "none";
-            document.getElementById("afterDeployBody").style.display = "block";
-            document.getElementById("postList").style.display = "none";
-            initializeLog();
-        } else if (contract.transactionHash) {
-            console.log("Awaiting contract deployment with transaction hash: ", contract.transactionHash);
-        } else {
-            console.error("Unresolved contract deployment error");
-        }
-    });
-}
-
 function storeContent(url) {
     window.ipfs.add(url, function(err, result) {
         if (err) {
@@ -61,12 +33,12 @@ function storeNewLog(text) {
 }
 
 function addToLog(hash) {
-    if (!window.contractInstance) {
+    if (!window.worldContractInstance) {
         console.error("Storage contract has not been deployed");
         return;
     }
 
-    window.contractInstance.get.call(function (err, result) {
+    window.worldContractInstance.get.call(function (err, result) {
         if (err) {
             console.error("Content fetch error:", err);
         } else if (result) {
@@ -127,7 +99,7 @@ function storeTextInField() {
 }
 
 function storeAddress(data) {
-    if (!window.contractInstance) {
+    if (!window.worldContractInstance) {
         console.error('Ensure the storage contract has been deployed');
         return;
     }
@@ -137,7 +109,7 @@ function storeAddress(data) {
         return;
     }
 
-    window.contractInstance.set.sendTransaction(data, window.sendDataObject, function (err, result) {
+    window.worldContractInstance.set.sendTransaction(data, window.sendDataObject, function (err, result) {
         if (err) {
             console.error("Transaction submission error:", err);
         } else {
@@ -148,12 +120,12 @@ function storeAddress(data) {
 }
 
 function fetchContent() {
-    if (!window.contractInstance) {
+    if (!window.worldContractInstance) {
         console.error("Storage contract has not been deployed");
         return;
     }
 
-    window.contractInstance.get.call(function (err, result) {
+    window.worldContractInstance.get.call(function (err, result) {
         if (err) {
             console.error("Content fetch error:", err);
         } else if (result && window.IPFSHash == result) {
@@ -189,12 +161,12 @@ function getText(hash) {
 }
 
 function getContent() {
-    if (!window.contractInstance) {
+    if (!window.worldContractInstance) {
         console.error("Storage contract has not been deployed");
         return;
     }
 
-    window.contractInstance.get.call(function (err, result) {
+    window.worldContractInstance.get.call(function (err, result) {
         if (err) {
             console.error("Content fetch error:", err);
         } else if (result) {
